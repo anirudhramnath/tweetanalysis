@@ -1,6 +1,7 @@
 
 import nltk
 from dataclean import clean_tweets
+from dataclean import clean_test_tweets
 from pprint import pprint
 
 
@@ -36,13 +37,6 @@ neg_tweets = [('I do not like this car', 'negative'),
               ('I am not looking forward to the concert', 'negative'),
               ('He is my enemy', 'negative')]
 
-test_tweets = [
-    (['feel', 'happy', 'this', 'morning'], 'positive'),
-    (['larry', 'friend'], 'positive'),
-    (['not', 'like', 'that', 'man'], 'negative'),
-    (['house', 'not', 'great'], 'negative'),
-    (['your', 'song', 'annoying'], 'negative')]
-
 tweets = clean_tweets(pos_tweets + neg_tweets)
 
 word_features = get_word_features(get_words_in_tweets(tweets))
@@ -51,5 +45,8 @@ training_set = nltk.classify.apply_features(extract_features, tweets)
 
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
-tweet = 'Obama is not my friend'
-print classifier.classify(extract_features(tweet.split()))
+tweet = 'enemy view'
+clean_tweet = clean_test_tweets([tweet])
+
+for x in clean_tweet:
+  print classifier.classify(extract_features(x))

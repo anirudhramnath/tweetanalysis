@@ -7,14 +7,35 @@ from nltk.stem.porter import PorterStemmer
 def clean_tweets(raw_tweets):
     tweets = []
     for (words, sentiment) in raw_tweets:
-        words_filtered = [lemmatize(e.lower()) for e in words.split() ] #if e not in stop_words
+        words_filtered = []
+        words = strip_html(words)
+
+        for e in words.split():
+            clean_word = lemmatize(e.lower())
+
+            if len(clean_word) > 2:
+                words_filtered.append(clean_word)
+
         tweets.append((words_filtered, sentiment))
 
     return tweets
 
+def clean_test_tweets(raw_tweets):
+    tweets = []
+    for (words) in raw_tweets:
+        words_filtered = []
+        for e in words.split():
+            clean_word = lemmatize(e.lower())
+
+            if len(clean_word) > 2:
+                words_filtered.append(clean_word)
+
+        tweets.append(words_filtered)
+
+    return tweets
 
 def lemmatize(word):
-    return porter_stemmer.stem(strip_html(word))
+    return porter_stemmer.stem(word)
 
 
 def strip_html(markup):
@@ -23,14 +44,14 @@ def strip_html(markup):
 
 porter_stemmer = PorterStemmer()
 
-stop_words = ['i','me','my','myself','we','our','ours','ourselves','you','your','yours',
-                'yourself','yourselves','he','him','his','himself','she','her','hers','herself','it','its',
-                'itself','they','them','their','theirs','themselves','what','which','who','whom','this',
-                'that','these','those','am','is','are','was','were','be','been','being','have','has','had',
-                'having','do','does','did','doing','a','an','the','and','but','if','or','because',
-                'as','until','while','of','at','by','for','with','about','against','between','into',
-                'through','during','before','after','above','below','to','from','up','down','in','out',
-                'on','off','over','under','again','further','then','once','here','there','when','where',
-                'why','how','all','any','both','each','few','more','most','other','some','such','no',
-                'nor','not','only','own','same','so','than','too','very','s','t','can','will','just',
-                'don','should','now']
+# stop_words = ['i','me','my','myself','we','our','ours','ourselves','you','your','yours',
+#                 'yourself','yourselves','he','him','his','himself','she','her','hers','herself','it','its',
+#                 'itself','they','them','their','theirs','themselves','what','which','who','whom','this',
+#                 'that','these','those','am','is','are','was','were','be','been','being','have','has','had',
+#                 'having','do','does','did','doing','a','an','the','and','but','if','or','because',
+#                 'as','until','while','of','at','by','for','with','about','against','between','into',
+#                 'through','during','before','after','above','below','to','from','up','down','in','out',
+#                 'on','off','over','under','again','further','then','once','here','there','when','where',
+#                 'why','how','all','any','both','each','few','more','most','other','some','such','no',
+#                 'nor','not','only','own','same','so','than','too','very','s','t','can','will','just',
+#                 'don','should','now']
