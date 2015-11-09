@@ -70,13 +70,5 @@ for i in range(7001,7201):
     except Exception:
         pass
 
-
-<<<<<<< HEAD
-#clean_tweet = clean_test_tweets([tweet])
-=======
-tweet = 'Opinion: <e>Obama</e> wins election <a>debate</a> http://t.co/edFpTPhM'
-clean_tweet = clean_test_tweets([tweet])
->>>>>>> 5ba7ef7b6d862f176209bf9b826d6607d763c9e0
-
 for (tweet, class_type) in test_tweet_list:
   print tweet, class_type, classifier.classify(extract_features(x))
