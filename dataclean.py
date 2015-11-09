@@ -3,18 +3,24 @@
 from bs4 import BeautifulSoup
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import RegexpTokenizer
+import re
 
 def clean_tweets(raw_tweets):
     tweets = []
     for (words, sentiment) in raw_tweets:
         words_filtered = []
         words = strip_html(words)
+        #remove URLs
+        words = re.sub('https?://[^\s]+', '', words)
+        #remove numbers
+        words = re.sub('\d+', '', words)
 
         tokens = tokenizer.tokenize(words)
 
         for e in tokens:
-            if e.startswith('@') or e.startswith('http'): continue
-            clean_word = lemmatize(e.lower())
+            e = e.lower()
+            if e.startswith('@') or e in stop_words: continue
+            clean_word = lemmatize(e)
 
             if len(clean_word) > 2:
                 words_filtered.append(clean_word)
@@ -28,11 +34,16 @@ def clean_test_tweets(raw_tweets):
     for words in raw_tweets:
         words_filtered = []
         words = strip_html(words)
+        #remove URLs
+        words = re.sub('https?://[^\s]+', '', words)
+        #remove numbers
+        words = re.sub('\d+', '', words)
 
         tokens = tokenizer.tokenize(words)
         for e in tokens:
-            if e.startswith('@') or e.startswith('http'): continue
-            clean_word = lemmatize(e.lower())
+            e = e.lower()
+            if e.startswith('@') or e in stop_words: continue
+            clean_word = lemmatize(e)
 
             if len(clean_word) > 2:
                 words_filtered.append(clean_word)
@@ -52,14 +63,14 @@ def strip_html(markup):
 porter_stemmer = PorterStemmer()
 tokenizer = RegexpTokenizer(r'\w+')
 
-# stop_words = ['i','me','my','myself','we','our','ours','ourselves','you','your','yours',
-#                 'yourself','yourselves','he','him','his','himself','she','her','hers','herself','it','its',
-#                 'itself','they','them','their','theirs','themselves','what','which','who','whom','this',
-#                 'that','these','those','am','is','are','was','were','be','been','being','have','has','had',
-#                 'having','do','does','did','doing','a','an','the','and','but','if','or','because',
-#                 'as','until','while','of','at','by','for','with','about','against','between','into',
-#                 'through','during','before','after','above','below','to','from','up','down','in','out',
-#                 'on','off','over','under','again','further','then','once','here','there','when','where',
-#                 'why','how','all','any','both','each','few','more','most','other','some','such','no',
-#                 'nor','not','only','own','same','so','than','too','very','s','t','can','will','just',
-#                 'don','should','now']
+stop_words = ['i','me','my','myself','we','our','ours','ourselves','you','your','yours',
+                'yourself','yourselves','he','him','his','himself','she','her','hers','herself','it','its',
+                'itself','they','them','their','theirs','themselves','what','which','who','whom','this',
+                'that','these','those','am','is','are','was','were','be','been','being','have','has','had',
+                'having','do','does','did','doing','a','an','the','and','but','if','or','because',
+                'as','while','of','at','by','for','with','about','between','into',
+                'through','during','before','after','above','below','to','from',
+                'on','off','over','under','again','further','then','once','here','there','when','where',
+                'why','how','all','any','both','each','other','some','such',
+                'only','own','same','so','than','too','s','t','can','just',
+                'now']
