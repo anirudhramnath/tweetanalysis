@@ -63,12 +63,19 @@ classifier = nltk.NaiveBayesClassifier.train(training_set)
 test_tweet_list = []
 for i in range(7001,7201):
     try:
-        tweet_string = str(sheet_obama.cell(row=i,column=4).value)
+        original_tweet_string = str(sheet_obama.cell(row=i,column=4).value)
         tweet_class = class_value_mapping[int(sheet_obama.cell(row=i,column=5).value)]
-        tweet_string = clean_test_tweets([tweet_string])[0]
-        test_tweet_list.append((tweet_string, tweet_class))
+        tweet_string = clean_test_tweets([original_tweet_string])[0]
+        test_tweet_list.append((tweet_string, tweet_class, original_tweet_string))
     except Exception:
         pass
 
-for (tweet, class_type) in test_tweet_list:
-  print tweet, class_type, classifier.classify(extract_features(x))
+correct, total = 0., 0.
+
+for (tweet, class_type, original_tweet_string) in test_tweet_list:
+  result = classifier.classify(extract_features(tweet))
+  total += 1
+  if result == class_type: correct += 1
+
+print 'accuracy: '+str(correct * 100/total)
+

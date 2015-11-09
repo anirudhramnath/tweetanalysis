@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import RegexpTokenizer
 
-
 def clean_tweets(raw_tweets):
     tweets = []
     for (words, sentiment) in raw_tweets:
@@ -14,7 +13,7 @@ def clean_tweets(raw_tweets):
         tokens = tokenizer.tokenize(words)
 
         for e in tokens:
-            if e.startswith('@'): continue
+            if e.startswith('@') or e.startswith('http'): continue
             clean_word = lemmatize(e.lower())
 
             if len(clean_word) > 2:
@@ -32,7 +31,7 @@ def clean_test_tweets(raw_tweets):
 
         tokens = tokenizer.tokenize(words)
         for e in tokens:
-            if e.startswith('@'): continue
+            if e.startswith('@') or e.startswith('http'): continue
             clean_word = lemmatize(e.lower())
 
             if len(clean_word) > 2:
