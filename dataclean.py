@@ -2,6 +2,7 @@
 
 from bs4 import BeautifulSoup
 from nltk.stem.porter import PorterStemmer
+from nltk.tokenize import RegexpTokenizer
 
 
 def clean_tweets(raw_tweets):
@@ -10,7 +11,10 @@ def clean_tweets(raw_tweets):
         words_filtered = []
         words = strip_html(words)
 
-        for e in words.split():
+        tokens = tokenizer.tokenize(words)
+
+        for e in tokens:
+            if e.startswith('@'): continue
             clean_word = lemmatize(e.lower())
 
             if len(clean_word) > 2:
@@ -43,6 +47,7 @@ def strip_html(markup):
     return soup.get_text()
 
 porter_stemmer = PorterStemmer()
+tokenizer = RegexpTokenizer(r'\w+')
 
 # stop_words = ['i','me','my','myself','we','our','ours','ourselves','you','your','yours',
 #                 'yourself','yourselves','he','him','his','himself','she','her','hers','herself','it','its',
