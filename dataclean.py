@@ -26,9 +26,13 @@ def clean_tweets(raw_tweets):
 
 def clean_test_tweets(raw_tweets):
     tweets = []
-    for (words) in raw_tweets:
+    for words in raw_tweets:
         words_filtered = []
-        for e in words.split():
+        words = strip_html(words)
+
+        tokens = tokenizer.tokenize(words)
+        for e in tokens:
+            if e.startswith('@'): continue
             clean_word = lemmatize(e.lower())
 
             if len(clean_word) > 2:

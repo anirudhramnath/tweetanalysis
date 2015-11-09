@@ -52,9 +52,9 @@ for i in range(3,7000):
         tweets.append((tweet_string, tweet_class))
     except Exception:
         pass
-    
+print len(tweets)
 tweets = clean_tweets(tweets)
-
+print len(tweets)
 word_features = get_word_features(get_words_in_tweets(tweets))
 
 training_set = nltk.classify.apply_features(extract_features, tweets)
@@ -71,7 +71,12 @@ for i in range(7001,7201):
         pass
 
 
+<<<<<<< HEAD
 #clean_tweet = clean_test_tweets([tweet])
+=======
+tweet = 'Opinion: <e>Obama</e> wins election <a>debate</a> http://t.co/edFpTPhM'
+clean_tweet = clean_test_tweets([tweet])
+>>>>>>> 5ba7ef7b6d862f176209bf9b826d6607d763c9e0
 
 for (tweet, class_type) in test_tweet_list:
   print tweet, class_type, classifier.classify(extract_features(x))
