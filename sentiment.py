@@ -3,7 +3,13 @@ import nltk
 from dataclean import clean_tweets
 from dataclean import clean_test_tweets
 from pprint import pprint
+import openpyxl
 
+class_value_mapping={
+1:"positive",
+-1:"negative",
+0:"neutral"
+}
 
 def get_words_in_tweets(tweets):
     all_words = []
@@ -36,13 +42,23 @@ neg_tweets = [('I do not like this car', 'negative'),
               ('I feel tired this morning', 'negative'),
               ('I am not looking forward to the concert', 'negative'),
               ('He is my enemy', 'negative')]
-
-tweets = clean_tweets(pos_tweets + neg_tweets)
+training_data_workbook = openpyxl.load_workbook("training-Obama-Romney-tweets.xlsx")
+sheet_obama = training_data_workbook.get_sheet_by_name("Obama")
+tweets = []
+for i in range(3,7201):
+    try:
+        tweet_string = str(sheet_obama.cell(row=i,column=4).value)
+        tweet_class = class_value_mapping[int(sheet_obama.cell(row=i,column=5).value)]
+        tweets.append((tweet_string, tweet_class))
+    except Exception:
+        pass
+    
+tweets = clean_tweets(tweets)
 
 word_features = get_word_features(get_words_in_tweets(tweets))
 
 training_set = nltk.classify.apply_features(extract_features, tweets)
-
+#pprint(word_features)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
 tweet = 'enemy view'
