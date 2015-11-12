@@ -57,7 +57,11 @@ def lemmatize(word):
 
 
 def strip_html(markup):
-    soup = BeautifulSoup(markup, 'html.parser')
+    try:
+        
+        soup = BeautifulSoup(markup, 'html.parser')
+    except Exception:
+        print markup
     return soup.get_text()
 
 porter_stemmer = PorterStemmer()
