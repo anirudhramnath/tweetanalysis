@@ -11,20 +11,20 @@ class_value_mapping={
 0:"neutral"
 }
 
-def get_words_in_tweets(tweets):
-    all_words = []
+def get_features_from_tweets(tweets):
+    features = []
     for (words, sentiment) in tweets:
-        all_words.extend(words)
-    return all_words
+        features.extend(words)
+    return features
 
 
-def get_word_features(wordlist):
-    wordlist = nltk.FreqDist(wordlist)
-    word_features = wordlist.keys()
-    return word_features
+def get_unique_features(feature_list):
+    feature_frequency_distribution = nltk.FreqDist(feature_list)
+    unique_features = feature_frequency_distribution.keys()
+    return unique_features
 
 
-def extract_features(document):
+def get_feature_mapping(document):
     document_words = set(document)
     features = {}
     for word in word_features:
@@ -71,9 +71,9 @@ for fold in range(2,10):
     print len(tweets)
     tweets = clean_tweets(tweets)
     print len(tweets)
-    word_features = get_word_features(get_words_in_tweets(tweets))
+    word_features = get_unique_features(get_features_from_tweets(tweets))
 
-    training_set = nltk.classify.apply_features(extract_features, tweets)
+    training_set = nltk.classify.apply_features(get_feature_mapping, tweets)
     #pprint(word_features)
     classifier = nltk.NaiveBayesClassifier.train(training_set)
     test_tweet_list = []
