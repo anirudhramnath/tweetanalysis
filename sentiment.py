@@ -103,7 +103,7 @@ for fold in range(2,10):
     correct_class_neg = 0.
     correct_class_neu = 0.
     for (tweet, class_type, original_tweet_string) in test_tweet_list:
-        result = classifier.classify(extract_features(tweet))
+        result = classifier.classify(get_feature_mapping(tweet))
         total += 1
         if class_type == result: correct += 1
         if class_type == 'positive':
