@@ -53,7 +53,7 @@ neg_tweets = [('I do not like this car', 'negative'),
               ('He is my enemy', 'negative')]
 
 training_data_workbook = openpyxl.load_workbook("training-Obama-Romney-tweets.xlsx")
-sheet_obama = training_data_workbook.get_sheet_by_name("Obama")
+sheet_obama = training_data_workbook.get_sheet_by_name("Romney")
 accuracy_list = []
 pos_precision_list = []
 neg_precision_list = []
