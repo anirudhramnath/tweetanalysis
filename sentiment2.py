@@ -71,10 +71,11 @@ for fold in range(10):
             list_of_input += range(720*index,720*index+720)
     for i in list_of_input:
         try:
-            tweet_string = str(sheet_obama.cell(row=i,column=4).value)
-            tweet_class = class_value_mapping[int(sheet_obama.cell(row=i,column=5).value)]
+            tweet_string = unicode(sheet_obama.cell(row=i,column=4).value)
+            tweet_class_str = unicode(sheet_obama.cell(row=i,column=5).value)
+            tweet_class = class_value_mapping[int(tweet_class_str.strip())]
             tweets.append((tweet_string, tweet_class))
-        except Exception:
+        except Exception as detail:
             pass
     print len(tweets)
     tweets = clean_tweets(tweets)
@@ -83,9 +84,8 @@ for fold in range(10):
 
     training_set = nltk.classify.apply_features(extract_features, tweets)
     #pprint(word_features)
-    pipeline = Pipeline([('tfidf', TfidfTransformer()),
-                         ('chi2', SelectKBest(chi2, k=1500)),
-                         ('nb', MultinomialNB())])
+    pipeline = Pipeline([('tfidf', TfidfTransformer()),('nb', MultinomialNB())])
+                         #('chi2', SelectKBest(chi2, k=1500)),
 
     classifier = SklearnClassifier(pipeline).train(training_set)
     #classifier = SklearnClassifier(LinearSVC()).train(training_set)
@@ -94,8 +94,9 @@ for fold in range(10):
     test_tweet_list = []
     for i in list_of_input:
         try:
-            original_tweet_string = str(sheet_obama.cell(row=i,column=4).value)
-            tweet_class = class_value_mapping[int(sheet_obama.cell(row=i,column=5).value)]
+            original_tweet_string = unicode(sheet_obama.cell(row=i,column=4).value)
+            tweet_class_str = unicode(sheet_obama.cell(row=i,column=5).value)
+            tweet_class = class_value_mapping[int(tweet_class_str.strip())]
             tweet_string = clean_test_tweets([original_tweet_string])[0]
             test_tweet_list.append((tweet_string, tweet_class, original_tweet_string))
         except Exception:
