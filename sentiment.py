@@ -62,8 +62,9 @@ for fold in range(2,10):
     
     for i in list_of_input:
         try:
-            tweet_string = str(sheet_obama.cell(row=i,column=4).value)
-            tweet_class = class_value_mapping[int(sheet_obama.cell(row=i,column=5).value)]
+            tweet_string = unicode(sheet_obama.cell(row=i,column=4).value)
+            tweet_class_str = unicode(sheet_obama.cell(row=i,column=5).value)
+            tweet_class = class_value_mapping[int(tweet_class_str.strip())]
             tweets.append((tweet_string, tweet_class))
         except Exception:
             pass
@@ -80,8 +81,9 @@ for fold in range(2,10):
     #print(list_of_input)
     for i in list_of_input:
         try:
-            original_tweet_string = str(sheet_obama.cell(row=i,column=4).value)
-            tweet_class = class_value_mapping[int(sheet_obama.cell(row=i,column=5).value)]
+            original_tweet_string = unicode(sheet_obama.cell(row=i,column=4).value)
+            tweet_class_str = unicode(sheet_obama.cell(row=i,column=5).value)
+            tweet_class = class_value_mapping[int(tweet_class_str.strip())]
             tweet_string = clean_test_tweets([original_tweet_string])[0]
             test_tweet_list.append((tweet_string, tweet_class, original_tweet_string))
         except Exception:

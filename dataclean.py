@@ -78,3 +78,5 @@ stop_words = ['i','me','my','myself','we','our','ours','ourselves','you','your',
                 'why','how','all','any','both','each','other','some','such',
                 'only','own','same','so','than','too','s','t','can','just',
                 'now']
+
+#stop_words = ['nothing here']
