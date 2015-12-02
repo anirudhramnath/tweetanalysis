@@ -43,7 +43,7 @@ neg_tweets = [('I do not like this car', 'negative'),
               ('I am not looking forward to the concert', 'negative'),
               ('He is my enemy', 'negative')]
 training_data_workbook = openpyxl.load_workbook("training-Obama-Romney-tweets.xlsx")
-sheet_obama = training_data_workbook.get_sheet_by_name("Obama")
+sheet_obama = training_data_workbook.get_sheet_by_name("Romney")
 accuracy_list = []
 pos_precision_list = []
 neg_precision_list = []
@@ -62,8 +62,9 @@ for fold in range(2,10):
     
     for i in list_of_input:
         try:
-            tweet_string = str(sheet_obama.cell(row=i,column=4).value)
-            tweet_class = class_value_mapping[int(sheet_obama.cell(row=i,column=5).value)]
+            tweet_string = unicode(sheet_obama.cell(row=i,column=4).value)
+            tweet_class_str = unicode(sheet_obama.cell(row=i,column=5).value)
+            tweet_class = class_value_mapping[int(tweet_class_str.strip())]
             tweets.append((tweet_string, tweet_class))
         except Exception:
             pass
@@ -80,8 +81,9 @@ for fold in range(2,10):
     #print(list_of_input)
     for i in list_of_input:
         try:
-            original_tweet_string = str(sheet_obama.cell(row=i,column=4).value)
-            tweet_class = class_value_mapping[int(sheet_obama.cell(row=i,column=5).value)]
+            original_tweet_string = unicode(sheet_obama.cell(row=i,column=4).value)
+            tweet_class_str = unicode(sheet_obama.cell(row=i,column=5).value)
+            tweet_class = class_value_mapping[int(tweet_class_str.strip())]
             tweet_string = clean_test_tweets([original_tweet_string])[0]
             test_tweet_list.append((tweet_string, tweet_class, original_tweet_string))
         except Exception:
@@ -101,7 +103,7 @@ for fold in range(2,10):
     correct_class_neg = 0.
     correct_class_neu = 0.
     for (tweet, class_type, original_tweet_string) in test_tweet_list:
-        result = classifier.classify(extract_features(tweet))
+        result = classifier.classify(get_feature_mapping(tweet))
         total += 1
         if class_type == result: correct += 1
         if class_type == 'positive':
